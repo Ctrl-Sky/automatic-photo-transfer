@@ -1,3 +1,5 @@
+import os
+
 def image_shift_up(image):
     # Expects filename of form IMG_####.JPG and increases #### by one
     try:
@@ -7,6 +9,7 @@ def image_shift_up(image):
 
     number += 1
 
+    # IMG_9999.JPG is the highest possible number for filename
     if number > 9999:
         return "Hit Photo Limit"
 
@@ -27,6 +30,7 @@ def image_shift_down(image):
 
     number -= 1
 
+    # IMG_0001.JPG is the lowest possible number for filename
     if number < 1:
         raise Exception("Image number can not be less than 1")
 
@@ -37,3 +41,37 @@ def image_shift_down(image):
         string_number = "0" + string_number
 
     return f"IMG_{string_number}.JPG"
+
+def directory_shift_down(dir):
+    # Expects directory in the form .../.../.../1[0-9][0-9]CANON
+    try:
+        dir_name = os.path.basename(os.path.normpath(dir))
+        number = int(dir_name[:3])
+    except:
+        raise Exception(f"{dir}: Incorrect directory name. Must match format .../.../.../1[0-9][0-9]CANON")
+
+    number -= 1
+
+    # 100CANON is the lowest possible directory name
+    if number < 100:
+        raise Exception(f"{dir}: Directory number can not be 100")
+
+    new_dir_name = f"{str(number)}CANON"
+    parent_dir = os.path.dirname(os.path.normpath(dir))
+
+    return f"{parent_dir}/{new_dir_name}"
+
+def directory_shift_up(dir):
+    # Expects directory in the form .../.../.../1[0-9][0-9]CANON
+    try:
+        dir_name = os.path.basename(os.path.normpath(dir))
+        number = int(dir_name[:3])
+    except:
+        raise Exception(f"{dir}: Incorrect directory name. Must match format .../.../.../1[0-9][0-9]CANON")
+
+    number += 1
+
+    new_dir_name = f"{str(number)}CANON"
+    parent_dir = os.path.dirname(os.path.normpath(dir))
+
+    return f"{parent_dir}/{new_dir_name}"
