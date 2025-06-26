@@ -93,5 +93,3 @@ def convert_to_month_year(exif_date, include_date=False):
         return datetime_obj.strftime("%b-%d-%Y")
     else:
         return datetime_obj.strftime("%b-%Y")
-
-print(convert_to_month_year(get_date_taken("tests/IMG_8423.JPG"), True))
