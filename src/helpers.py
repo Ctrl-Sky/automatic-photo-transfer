@@ -1,4 +1,6 @@
 import os
+from datetime import datetime
+from PIL import Image
 
 def image_shift_up(image):
     # Expects filename of form IMG_####.JPG and increases #### by one
@@ -75,3 +77,21 @@ def directory_shift_up(dir):
     parent_dir = os.path.dirname(os.path.normpath(dir))
 
     return f"{parent_dir}/{new_dir_name}"
+
+def get_date_taken(image_path):
+    exif = Image.open(image_path)._getexif()
+    if not exif:
+        return "Image does not have EXIF data"
+    return exif[36867]
+
+def convert_to_month_year(exif_date, include_date=False):
+    # Expects exif_date to be in form of %Y:%m:%d %H:%M:%S
+    date = exif_date.split(" ")[0]
+    datetime_obj = datetime.strptime(date, "%Y:%m:%d")
+    
+    if include_date:
+        return datetime_obj.strftime("%b-%d-%Y")
+    else:
+        return datetime_obj.strftime("%b-%Y")
+
+print(convert_to_month_year(get_date_taken("tests/IMG_8423.JPG"), True))
