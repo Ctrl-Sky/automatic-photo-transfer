@@ -12,7 +12,7 @@ def image_shift_up(image):
 
     string_number = str(number)
     missing_digits = 4 - len(string_number)
-    print(string_number, missing_digits)
+    
     for i in range(missing_digits, 0, -1):
         string_number = "0" + string_number
 
