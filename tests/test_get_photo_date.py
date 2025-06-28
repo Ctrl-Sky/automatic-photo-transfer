@@ -1,4 +1,4 @@
-from src.helpers import convert_to_month_year, get_date_taken
+from helpers import convert_to_month_year, get_date_taken
 
 def test_get_date():
     assert get_date_taken("tests/IMG_8423.JPG") == "2024:07:02 10:19:42"

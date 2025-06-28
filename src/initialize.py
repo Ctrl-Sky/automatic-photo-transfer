@@ -1,6 +1,6 @@
 import csv
 import os
-from .helpers import directory_shift_up
+from helpers import directory_shift_up
 
 def does_path_exist(path):
     if not os.path.exists(path):

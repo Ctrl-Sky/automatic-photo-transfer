@@ -1,5 +1,5 @@
 import pytest
-from src.helpers import image_shift_up, image_shift_down
+from helpers import image_shift_up, image_shift_down
 
 def test_up_single_digit():
     assert image_shift_up("IMG_0001.JPG") == "IMG_0002.JPG"

@@ -1,6 +1,6 @@
 import argparse
 import csv
-from .initialize import initialize_repo
+from initialize import initialize_repo
 
 # TABLE_PATH = "tables/sd_migration_table.csv"
 TABLE_PATH = "tables/test.csv"

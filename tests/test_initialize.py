@@ -1,7 +1,7 @@
 import pytest
 import os
 import csv
-from src.initialize import initialize_table, get_start_values, edge_case_9999, initialize_repo
+from initialize import initialize_table, get_start_values, edge_case_9999, initialize_repo
 
 CSV_PATH = "test/test.csv"
 SD_CARD_1 = "SD_CARD_1"
