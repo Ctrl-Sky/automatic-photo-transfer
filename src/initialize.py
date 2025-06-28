@@ -43,7 +43,7 @@ def edge_case_9999(start_dir):
 
 def initialize_repo(sd_card_name, external_hd_name, table_path):
     '''
-        Initialized the repository by:
+        Initializes the repository by:
         - Ensuring sd card and hard drive exist
         - Creating table and header if it does not exist
         - If it exist, get the most recent upload for the sd card in the csv file, then setting the new start values as the end values
