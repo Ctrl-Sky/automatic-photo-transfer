@@ -13,4 +13,4 @@ if __name__ == "__main__":
     parser.add_argument("--migration_name", required=False)
     args = parser.parse_args()
 
-    print(initialize_repo(args.sd_card_name, args.external_hd_name, TABLE_PATH))
+    start_dir, start_image, start_date = initialize_repo(args.sd_card_name, args.external_hd_name, TABLE_PATH)
