@@ -21,19 +21,20 @@ def initialize_table(table_path):
         writer = csv.writer(file)
         writer.writerow(["migration_name", "sd_card_name", "start_dir", "start_image", "start_date", "end_dir", "end_image", "end_date"])
 
-def get_start_values(table_path, sd_card_name):
+def get_start_values(table_path, sd_card_path):
     '''
         Starting from the bottom in the migration table, look for the most recent migration with the given SD card name
         If found, set the start values for this migration as the end values of the last migration
         If not found, set as default "start" migration values
     '''
+    sd_card_name = os.path.basename(sd_card_path)
     with open(table_path, 'r') as file:
         reversed_reader = reversed(list(csv.reader(file)))
         for row in reversed_reader:
             if row[1] == sd_card_name:
                 # Return the end_dir, end_image, end_date
                 return row[5], row[6], row[7]
-        return f"/Volumes/{sd_card_name}/DCIM/100CANON", "IMG_0001.JPG", "N/A"
+        return f"{sd_card_path}/DCIM/100CANON", "IMG_0001.JPG", "N/A"
     
 def edge_case_9999(start_dir):
     # For when image is at final name of IMG_9999.JPG, no more space so must shift to new directory
@@ -41,7 +42,7 @@ def edge_case_9999(start_dir):
     new_image = "IMG_0001.JPG"
     return new_dir, new_image
 
-def initialize_repo(sd_card_name, external_hd_name, table_path):
+def initialize_repo(sd_card_path, external_hd_path, table_path):
     '''
         Initializes the repository by:
         - Ensuring sd card and hard drive exist
@@ -51,14 +52,14 @@ def initialize_repo(sd_card_name, external_hd_name, table_path):
         - Shift start directory if start image is at IMG_9999
         - Return the start values
     '''
-    does_path_exist(sd_card_name)
-    does_path_exist(external_hd_name)
+    does_path_exist(sd_card_path)
+    does_path_exist(external_hd_path)
 
     # If table does not exist, create it and add headers
     if not os.path.exists(table_path):
         initialize_table(table_path)
 
-    start_dir, start_image, start_date = get_start_values(table_path, sd_card_name)
+    start_dir, start_image, start_date = get_start_values(table_path, sd_card_path)
 
     # If image at edge case
     if start_image == "IMG_9999.JPG":
