@@ -63,9 +63,10 @@ def convert_end_to_start_values(end_dir, end_image, sd_card_path):
         start_image = "IMG_0001.JPG"
         start_date = get_date_taken(f"{start_dir}/{start_image}")
     else:
-        start_image = image_shift_up(start_image)
+        start_image = image_shift_up(end_image)
+        start_dir = end_dir
         if start_image == "Hit Photo Limit":
-            start_dir, start_image = edge_case_9999(start_dir)
+            start_dir, start_image = edge_case_9999(end_dir)
         start_date = get_date_taken(f"{start_dir}/{start_image}")
     return start_dir, start_image, start_date
     
