@@ -4,7 +4,7 @@ import csv
 from initialize import initialize_table, get_end_values_from_table, edge_case_9999, initialize_repo, convert_end_to_start_values
 
 CSV_PATH = "test/test.csv"
-SD_CARD_1 = "SD_CARD_1"
+SD_CARD_1 = "tests"
 SD_CARD_2 = "SD_CARD_2"
 HARD_DRIVE = "HARD_DRIVE"
 
@@ -51,68 +51,62 @@ def test_get_eng_value_not_exist():
     remove_csv_path(CSV_PATH)
 
 def test_convert_end_to_start_exist():
-    assert convert_end_to_start_values("tests/DCIM/101CANON", "IMG_8422.JPG", "SD_CARD_1") == ("tests/DCIM/101CANON", "IMG_8423.JPG", "2024:07:02 10:19:42")
+    assert convert_end_to_start_values(f"{SD_CARD_1}/DCIM/101CANON", "IMG_8422.JPG", SD_CARD_1) == (f"{SD_CARD_1}/DCIM/101CANON", "IMG_8423.JPG", "2024:07:02 10:19:42")
 
 def test_convert_end_to_start_9999():
-    assert convert_end_to_start_values("tests/DCIM/100CANON", "IMG_9999.JPG", "SD_CARD_1") == ("tests/DCIM/101CANON", "IMG_0001.JPG", "2024:07:02 10:19:42")
+    assert convert_end_to_start_values(f"{SD_CARD_1}/DCIM/100CANON", "IMG_9999.JPG", SD_CARD_1) == (f"{SD_CARD_1}/DCIM/101CANON", "IMG_0001.JPG", "2024:07:02 10:19:42")
 
 def test_convert_end_to_start_not_exist():
-    assert convert_end_to_start_values("NOT", "FOUND", "tests") == ("tests/DCIM/100CANON", "IMG_0001.JPG", "2024:07:02 10:19:42")
+    assert convert_end_to_start_values("NOT", "FOUND", SD_CARD_1) == (f"{SD_CARD_1}/DCIM/100CANON", "IMG_0001.JPG", "2024:07:02 10:19:42")
 
 def test_edge_case_9999():
     assert edge_case_9999(f"{SD_CARD_1}/DCIM/101CANON") == (f"{SD_CARD_1}/DCIM/102CANON", "IMG_0001.JPG")
 
-# def test_initialize_repo_table_exist():
-#     '''
-#         Test when table already exist and sd card name exist in table
-#     '''
-#     # Initialize Environment for testing initialize_repo()
-#     os.makedirs(SD_CARD_1)
-#     os.makedirs(HARD_DRIVE)
-#     initialize_table(CSV_PATH)
-#     with open(CSV_PATH, 'a') as file:
-#         writer = csv.writer(file)
-#         writer.writerow(["vacation_2024",SD_CARD_1,"/DCIM/100CANON","IMG_0001.JPG","2024-07-01 09:00:00","/DCIM/101CANON","IMG_0150.JPG","2024-07-01 18:30:00"])
+def test_initialize_repo_table_exist():
+    '''
+        Test when table already exist and sd card name exist in table
+    '''
+    # Initialize Environment for testing initialize_repo()
+    os.makedirs(HARD_DRIVE)
+    initialize_table(CSV_PATH)
+    with open(CSV_PATH, 'a') as file:
+        writer = csv.writer(file)
+        writer.writerow(["vacation_2024",SD_CARD_1,f"{SD_CARD_1}/DCIM/100CANON","IMG_0001.JPG","2024-07-01 09:00:00",f"{SD_CARD_1}/DCIM/101CANON","IMG_8422.JPG","2024:07:02 10:19:42"])
 
 
-#     assert initialize_repo(SD_CARD_1, HARD_DRIVE, CSV_PATH) == ("/DCIM/101CANON","IMG_0151.JPG")
+    assert initialize_repo(SD_CARD_1, HARD_DRIVE, CSV_PATH) == ("tests/DCIM/101CANON","IMG_8423.JPG", "2024:07:02 10:19:42")
 
-#     # Clean up test environment
-#     os.rmdir(SD_CARD_1)
-#     os.rmdir(HARD_DRIVE)
-#     remove_csv_path(CSV_PATH)
+    # Clean up test environment
+    os.rmdir(HARD_DRIVE)
+    remove_csv_path(CSV_PATH)
 
-# def test_initialize_repo_table_not_exist():
-#     '''
-#         Test when table does not exist and sd card name does not exist within table
-#     '''
-#     # Initialize Environment for testing initialize_repo()
-#     os.makedirs(SD_CARD_1)
-#     os.makedirs(HARD_DRIVE)
+def test_initialize_repo_table_not_exist():
+    '''
+        Test when table does not exist and sd card name does not exist within table
+    '''
+    # Initialize Environment for testing initialize_repo()
+    os.makedirs(HARD_DRIVE)
 
-#     assert initialize_repo(SD_CARD_1, HARD_DRIVE, CSV_PATH) == (f"{SD_CARD_1}/DCIM/100CANON", "IMG_0001.JPG")
+    assert initialize_repo(SD_CARD_1, HARD_DRIVE, CSV_PATH) == (f"{SD_CARD_1}/DCIM/100CANON", "IMG_0001.JPG", "2024:07:02 10:19:42")
 
-#     # Clean up environment
-#     os.rmdir(SD_CARD_1)
-#     os.rmdir(HARD_DRIVE)
-#     remove_csv_path(CSV_PATH)
+    # Clean up environment
+    os.rmdir(HARD_DRIVE)
+    remove_csv_path(CSV_PATH)
 
 
-# def test_initialize_repo_img_9999():
-#     '''
-#         Test when table already exist and most recent image is IMG_9999.JPG
-#     '''
-#     # Initialize Environment for testing initialize_repo()
-#     os.makedirs(SD_CARD_1)
-#     os.makedirs(HARD_DRIVE)
-#     initialize_table(CSV_PATH)
-#     with open(CSV_PATH, 'a') as file:
-#         writer = csv.writer(file)
-#         writer.writerow(["vacation_2024",SD_CARD_1,"/DCIM/100CANON","IMG_0001.JPG","2024-07-01 09:00:00","/DCIM/101CANON","IMG_9999.JPG","2024-07-01 18:30:00"])
+def test_initialize_repo_img_9999():
+    '''
+        Test when table already exist and most recent image is IMG_9999.JPG
+    '''
+    # Initialize Environment for testing initialize_repo()
+    os.makedirs(HARD_DRIVE)
+    initialize_table(CSV_PATH)
+    with open(CSV_PATH, 'a') as file:
+        writer = csv.writer(file)
+        writer.writerow(["vacation_2024",SD_CARD_1,"/DCIM/100CANON","IMG_0001.JPG","2024-07-01 09:00:00",f"{SD_CARD_1}/DCIM/100CANON","IMG_9999.JPG","2024-07-01 18:30:00"])
 
-#     assert initialize_repo(SD_CARD_1, HARD_DRIVE, CSV_PATH) == ("/DCIM/102CANON","IMG_0001.JPG")
+    assert initialize_repo(SD_CARD_1, HARD_DRIVE, CSV_PATH) == ("tests/DCIM/101CANON","IMG_0001.JPG", "2024:07:02 10:19:42")
 
-#     # Clean up test environment
-#     os.rmdir(SD_CARD_1)
-#     os.rmdir(HARD_DRIVE)
-#     remove_csv_path(CSV_PATH)
+    # Clean up test environment
+    os.rmdir(HARD_DRIVE)
+    remove_csv_path(CSV_PATH)
