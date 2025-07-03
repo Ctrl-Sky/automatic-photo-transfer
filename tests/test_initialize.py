@@ -32,7 +32,7 @@ def test_get_start_value_exist():
         writer.writerow(["vacation_2024",SD_CARD_1,"/DCIM/100CANON","IMG_0001.JPG","2024-07-01 09:00:00","/DCIM/101CANON","IMG_0150.JPG","2024-07-01 18:30:00"])
 
     # Test SD_CARD_NAME does exist in csv file
-    assert get_start_values(CSV_PATH, SD_CARD_1) == ("/DCIM/101CANON","IMG_0150.JPG","2024-07-01 18:30:00")
+    assert get_start_values(CSV_PATH, SD_CARD_1) == ("/DCIM/101CANON","IMG_0151.JPG")
 
     # Clean up test environment
     remove_csv_path(CSV_PATH)
@@ -45,13 +45,13 @@ def test_get_start_value_not_exist():
         writer.writerow(["vacation_2024",SD_CARD_1,"/DCIM/100CANON","IMG_0001.JPG","2024-07-01 09:00:00","/DCIM/101CANON","IMG_0150.JPG","2024-07-01 18:30:00"])
 
     # Test SD_CARD_NAME does NOT exist in csv file
-    assert get_start_values(CSV_PATH, SD_CARD_2) == (f"/Volumes/{SD_CARD_2}/DCIM/100CANON", "IMG_0001.JPG", "N/A")
+    assert get_start_values(CSV_PATH, SD_CARD_2) == (f"{SD_CARD_2}/DCIM/100CANON", "IMG_0001.JPG")
 
     # Clean up test environment
     remove_csv_path(CSV_PATH)
 
 def test_edge_case_9999():
-    assert edge_case_9999(f"/Volumes/{SD_CARD_1}/DCIM/101CANON") == (f"/Volumes/{SD_CARD_1}/DCIM/102CANON", "IMG_0001.JPG")
+    assert edge_case_9999(f"{SD_CARD_1}/DCIM/101CANON") == (f"{SD_CARD_1}/DCIM/102CANON", "IMG_0001.JPG")
 
 def test_initialize_repo_table_exist():
     '''
@@ -66,7 +66,7 @@ def test_initialize_repo_table_exist():
         writer.writerow(["vacation_2024",SD_CARD_1,"/DCIM/100CANON","IMG_0001.JPG","2024-07-01 09:00:00","/DCIM/101CANON","IMG_0150.JPG","2024-07-01 18:30:00"])
 
 
-    assert initialize_repo(SD_CARD_1, HARD_DRIVE, CSV_PATH) == ("/DCIM/101CANON","IMG_0150.JPG","2024-07-01 18:30:00")
+    assert initialize_repo(SD_CARD_1, HARD_DRIVE, CSV_PATH) == ("/DCIM/101CANON","IMG_0151.JPG")
 
     # Clean up test environment
     os.rmdir(SD_CARD_1)
@@ -81,7 +81,7 @@ def test_initialize_repo_table_not_exist():
     os.makedirs(SD_CARD_1)
     os.makedirs(HARD_DRIVE)
 
-    assert initialize_repo(SD_CARD_1, HARD_DRIVE, CSV_PATH) == (f"/Volumes/{SD_CARD_1}/DCIM/100CANON", "IMG_0001.JPG", "N/A")
+    assert initialize_repo(SD_CARD_1, HARD_DRIVE, CSV_PATH) == (f"{SD_CARD_1}/DCIM/100CANON", "IMG_0001.JPG")
 
     # Clean up environment
     os.rmdir(SD_CARD_1)
@@ -101,7 +101,7 @@ def test_initialize_repo_img_9999():
         writer = csv.writer(file)
         writer.writerow(["vacation_2024",SD_CARD_1,"/DCIM/100CANON","IMG_0001.JPG","2024-07-01 09:00:00","/DCIM/101CANON","IMG_9999.JPG","2024-07-01 18:30:00"])
 
-    assert initialize_repo(SD_CARD_1, HARD_DRIVE, CSV_PATH) == ("/DCIM/102CANON","IMG_0001.JPG","2024-07-01 18:30:00")
+    assert initialize_repo(SD_CARD_1, HARD_DRIVE, CSV_PATH) == ("/DCIM/102CANON","IMG_0001.JPG")
 
     # Clean up test environment
     os.rmdir(SD_CARD_1)

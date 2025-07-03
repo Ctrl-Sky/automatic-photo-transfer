@@ -57,18 +57,10 @@ def edge_case_9999(start_dir):
     return new_dir, new_image
 
 def initialize_repo(sd_card_path, external_hd_path, table_path):
-    '''
-        Initializes the repository by:
-        - Ensuring sd card and hard drive exist
-        - Creating table and header if it does not exist
-        - If it exist, get the most recent upload for the sd card in the csv file, then setting the new start values as the end values
-        - If not exist, set default values for the start values
-        - Shift start directory if start image is at IMG_9999
-        - Return the start values
-    '''
     """
-        If the sd card is referenced within the table, get  the most recent photos that were uploaded from that sd card, increment by one set as the the new start point
-        If the sd card is not referenced, return the default start values for the new start point
+        Within the table path, if the SD card had a recorded migration, pulls the most recent photo that was migrated from the SD 
+        card and uses that as references for the next starting point for the next migration.
+        If the SD card has never had a recorded migration, use the defual values as the starting point
 
         :param sd_card_path: The full path to a sd card
         :type sd_card_path: string
