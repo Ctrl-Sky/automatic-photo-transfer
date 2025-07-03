@@ -1,17 +1,18 @@
 import csv
 import os
-from helpers import directory_shift_up
+from helpers import directory_shift_up, image_shift_up
 
 def does_path_exist(path):
     if not os.path.exists(path):
         raise Exception(f"{path} does not exist")
 
 def initialize_table(table_path):
-    '''
-        Takes a path to a csv file
-        Creates the parent directories if they exist
-        Create the csv file and write the headers into it
-    '''
+    """
+        Takes a path to a csv file and if it doesn't exist, creates the file and adds the header
+
+        :param table_path: The full path including the file name to a csv table
+        :type table_path: string
+    """
     # Create Parent Directories
     if os.path.dirname(table_path) != "":
         os.makedirs(os.path.dirname(table_path))
@@ -22,19 +23,32 @@ def initialize_table(table_path):
         writer.writerow(["migration_name", "sd_card_name", "start_dir", "start_image", "start_date", "end_dir", "end_image", "end_date"])
 
 def get_start_values(table_path, sd_card_path):
-    '''
-        Starting from the bottom in the migration table, look for the most recent migration with the given SD card name
-        If found, set the start values for this migration as the end values of the last migration
-        If not found, set as default "start" migration values
-    '''
+    """
+        If the sd card is referenced within the table, get  the most recent photos that were uploaded from that sd card, increment by one set as the the new start point
+        If the sd card is not referenced, return the default start values for the new start point
+
+        :param table_path: The full path to a csv table
+        :type table_path: string
+        :param sd_card_path: The full path to a sd card
+        :type sd_card_path: string
+        :return: the new file name shifted up by one
+        :rtype: string
+    """
     sd_card_name = os.path.basename(sd_card_path)
     with open(table_path, 'r') as file:
         reversed_reader = reversed(list(csv.reader(file)))
         for row in reversed_reader:
             if row[1] == sd_card_name:
-                # Return the end_dir, end_image, end_date
-                return row[5], row[6], row[7]
-        return f"{sd_card_path}/DCIM/100CANON", "IMG_0001.JPG", "N/A"
+                # Return the end_dir, end_image
+                start_dir, start_image =  row[5], row[6]
+
+                # Shift image up to new values that need to be uploaded
+                start_image = image_shift_up(start_image)
+                if start_image == "Hit Photo Limit":
+                    start_dir, start_image = edge_case_9999(start_dir)
+                return start_dir, start_image
+
+        return f"{sd_card_path}/DCIM/100CANON", "IMG_0001.JPG"
     
 def edge_case_9999(start_dir):
     # For when image is at final name of IMG_9999.JPG, no more space so must shift to new directory
@@ -52,6 +66,19 @@ def initialize_repo(sd_card_path, external_hd_path, table_path):
         - Shift start directory if start image is at IMG_9999
         - Return the start values
     '''
+    """
+        If the sd card is referenced within the table, get  the most recent photos that were uploaded from that sd card, increment by one set as the the new start point
+        If the sd card is not referenced, return the default start values for the new start point
+
+        :param sd_card_path: The full path to a sd card
+        :type sd_card_path: string
+        :param external_hd_path: The full path to a external hd
+        :type external_hd_path: string
+        :param table_path: The full path to a csv table
+        :type table_path: string
+        :return: two values, the start directory and image for the next migration
+        :rtype: string, string
+    """
     does_path_exist(sd_card_path)
     does_path_exist(external_hd_path)
 
@@ -59,10 +86,4 @@ def initialize_repo(sd_card_path, external_hd_path, table_path):
     if not os.path.exists(table_path):
         initialize_table(table_path)
 
-    start_dir, start_image, start_date = get_start_values(table_path, sd_card_path)
-
-    # If image at edge case
-    if start_image == "IMG_9999.JPG":
-        start_dir, start_image = edge_case_9999(start_dir)
-
-    return start_dir, start_image, start_date
+    return get_start_values(table_path, sd_card_path)
