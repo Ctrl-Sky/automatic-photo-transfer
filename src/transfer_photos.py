@@ -1,7 +1,7 @@
 import os
 import helpers
 
-def get_end_values(current_dir, current_image):
+def get_end_values(current_dir, current_image, current_date):
     """
         To be used after the while loop. Due to the logic of the while loop, the current_image is shifted up until it doesn't exist
         anymore. Since the end values of the table must include the value of the last photo uploaded, the photo is shifted down so
@@ -18,12 +18,10 @@ def get_end_values(current_dir, current_image):
     if not os.path.exists(current_dir):
         end_dir = helpers.directory_shift_down(current_dir)
         end_image = "IMG_9999.JPG"
-        end_date = helpers.get_date_taken(f"{end_dir}/{end_image}")
     else:
         end_dir = current_dir
         end_image = helpers.image_shift_down(current_image)
-        end_date = helpers.get_date_taken(f"{end_dir}/{end_image}")
-    return end_dir, end_image, end_date
+    return end_dir, end_image, current_date
         
 
 def transfer_photos(start_dir, start_image, external_hd_path):
@@ -62,5 +60,6 @@ def transfer_photos(start_dir, start_image, external_hd_path):
         if current_image == "Hit Photo Limit":
             current_image = "IMG_0001.JPG"
             current_dir = helpers.directory_shift_up(current_dir)
-    
-    return get_end_values(current_dir, current_image)
+        current_path = f"{current_dir}/{current_image}"
+
+    return get_end_values(current_dir, current_image, current_date)
