@@ -24,7 +24,7 @@ def get_end_values(current_dir, current_image, current_date):
     return end_dir, end_image, current_date
         
 
-def transfer_photos(start_dir, start_image, external_hd_path):
+def transfer_photos(start_dir, start_image, external_hd_path, include_day=False):
     """
         Transfers photos from an SD card directory to an external hard drive, organizing them by the month and year the photo was taken.
 
@@ -47,7 +47,7 @@ def transfer_photos(start_dir, start_image, external_hd_path):
 
     while os.path.exists(current_path):
         current_date = helpers.get_date_taken(current_path)
-        pretty_date = helpers.convert_to_month_year(current_date)
+        pretty_date = helpers.convert_to_month_year(current_date, include_day)
 
         hd_pretty_date_path = f"{external_hd_path}/{pretty_date}"
         if not os.path.exists(hd_pretty_date_path):

@@ -7,4 +7,4 @@ def test_date_convert():
     assert convert_to_month_year(get_date_taken("tests/DCIM/101CANON/IMG_8423.JPG")) == "Jul-2024"
 
 def test_date_convert_with_day():
-    assert convert_to_month_year(get_date_taken("tests/DCIM/101CANON/IMG_8423.JPG"), include_date=True) == "Jul-02-2024"
+    assert convert_to_month_year(get_date_taken("tests/DCIM/101CANON/IMG_8423.JPG"), include_day=True) == "Jul-02-2024"

@@ -37,3 +37,12 @@ def test_transfer_photos_diff_dates():
     os.rename("tests/hard_drive/Jul-2024/IMG_1001.JPG", "tests/DCIM/104CANON/IMG_1001.JPG")
     os.rmdir("tests/hard_drive/Jul-2024")
     os.rmdir("tests/hard_drive/Jan-2023")
+
+def test_transfer_photos_include_day():
+    assert transfer_photos("tests/DCIM/104CANON", "IMG_1000.JPG", HD_PATH, include_day=True) == ("tests/DCIM/104CANON", "IMG_1001.JPG", IMG_DATE)
+
+    # Clean up environment
+    os.rename("tests/hard_drive/Jan-29-2023/IMG_1000.JPG", "tests/DCIM/104CANON/IMG_1000.JPG")
+    os.rename("tests/hard_drive/Jul-02-2024/IMG_1001.JPG", "tests/DCIM/104CANON/IMG_1001.JPG")
+    os.rmdir("tests/hard_drive/Jul-02-2024")
+    os.rmdir("tests/hard_drive/Jan-29-2023")

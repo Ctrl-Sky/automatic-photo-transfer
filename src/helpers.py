@@ -124,7 +124,7 @@ def get_date_taken(image_path):
         return "Image does not have EXIF data"
     return exif[36867]
 
-def convert_to_month_year(exif_date, include_date=False):
+def convert_to_month_year(exif_date, include_day=False):
     """
         Convert an exif date in the form YYYY:MM:DD HH:MM:SS into a pretty print of just month-year or month-date-year
         
@@ -138,7 +138,7 @@ def convert_to_month_year(exif_date, include_date=False):
     date = exif_date.split(" ")[0]
     datetime_obj = datetime.strptime(date, "%Y:%m:%d")
     
-    if include_date:
+    if include_day:
         return datetime_obj.strftime("%b-%d-%Y")
     else:
         return datetime_obj.strftime("%b-%Y")
