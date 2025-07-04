@@ -46,3 +46,27 @@ def test_transfer_photos_include_day():
     os.rename("tests/hard_drive/Jul-02-2024/IMG_1001.JPG", "tests/DCIM/104CANON/IMG_1001.JPG")
     os.rmdir("tests/hard_drive/Jul-02-2024")
     os.rmdir("tests/hard_drive/Jan-29-2023")
+
+def test_transfer_photos_with_end_on_after():
+    assert transfer_photos("tests/DCIM/104CANON", "IMG_8411.JPG", HD_PATH, end_on="2024:07:12", include_day=True) == ("tests/DCIM/104CANON", "IMG_8414.JPG", "2024:07:11 06:35:25")
+
+    # Clean up environment
+    os.rename("tests/hard_drive/Jul-02-2024/IMG_8411.JPG", "tests/DCIM/104CANON/IMG_8411.JPG")
+    os.rename("tests/hard_drive/Jul-04-2024/IMG_8412.JPG", "tests/DCIM/104CANON/IMG_8412.JPG")
+    os.rename("tests/hard_drive/Jul-05-2024/IMG_8413.JPG", "tests/DCIM/104CANON/IMG_8413.JPG")
+    os.rename("tests/hard_drive/Jul-11-2024/IMG_8414.JPG", "tests/DCIM/104CANON/IMG_8414.JPG")
+    os.rmdir("tests/hard_drive/Jul-02-2024")
+    os.rmdir("tests/hard_drive/Jul-04-2024")
+    os.rmdir("tests/hard_drive/Jul-05-2024")
+    os.rmdir("tests/hard_drive/Jul-11-2024")
+
+def test_transfer_photos_with_end_on_after():
+    assert transfer_photos("tests/DCIM/104CANON", "IMG_8411.JPG", HD_PATH, end_on="2024:07:11", include_day=True) == ("tests/DCIM/104CANON", "IMG_8413.JPG", "2024:07:05 07:02:24")
+
+    # Clean up environment
+    os.rename("tests/hard_drive/Jul-02-2024/IMG_8411.JPG", "tests/DCIM/104CANON/IMG_8411.JPG")
+    os.rename("tests/hard_drive/Jul-04-2024/IMG_8412.JPG", "tests/DCIM/104CANON/IMG_8412.JPG")
+    os.rename("tests/hard_drive/Jul-05-2024/IMG_8413.JPG", "tests/DCIM/104CANON/IMG_8413.JPG")
+    os.rmdir("tests/hard_drive/Jul-02-2024")
+    os.rmdir("tests/hard_drive/Jul-04-2024")
+    os.rmdir("tests/hard_drive/Jul-05-2024")
