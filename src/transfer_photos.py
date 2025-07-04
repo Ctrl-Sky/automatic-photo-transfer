@@ -23,8 +23,18 @@ def get_end_values(current_dir, current_image, current_date):
         end_image = helpers.image_shift_down(current_image)
     return end_dir, end_image, current_date
         
+def image_before_end_on_date(end_on, image_path):
+    if end_on == "":
+        return True
+    else:
+        image_date = helpers.get_date_taken(image_path)
+        if end_on in image_date:
+            return False
+        else:
+            return True
 
-def transfer_photos(start_dir, start_image, external_hd_path, include_day=False):
+
+def transfer_photos(start_dir, start_image, external_hd_path, include_day=False, end_on=""):
     """
         Transfers photos from an SD card directory to an external hard drive, organizing them by the month and year the photo was taken.
 
@@ -38,6 +48,10 @@ def transfer_photos(start_dir, start_image, external_hd_path, include_day=False)
         :type start_image: string
         :param external_hd_path: The full path to the external hard drive the photos will be moved to
         :type external_hd_path: string
+        :param include_day: Optional flag whether to organize photos into directory based off specific date and not month
+        :type include_day: bool, Optional
+        :param end_on: Date to end on (exclusive). SHould be in form of YYYY:MM:DD
+        :type end_on: string
         :return: two values, the start directory and image for the next migration
         :rtype: string, string
     """
@@ -45,7 +59,7 @@ def transfer_photos(start_dir, start_image, external_hd_path, include_day=False)
     current_image = start_image
     current_path = f"{current_dir}/{current_image}"
 
-    while os.path.exists(current_path):
+    while os.path.exists(current_path) and image_before_end_on_date(end_on, current_path) :
         current_date = helpers.get_date_taken(current_path)
         pretty_date = helpers.convert_to_month_year(current_date, include_day)
 

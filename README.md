@@ -7,7 +7,7 @@ python3.12 -m venv .venv
 . .venv/bin/activate
 pip install -r requirements.txt
 pytest (from root)
-python -m src.main
+python src/main.py
 
 This is specifically designed for Canon cameras and the SD cards they format. 
 For these SD cards, they always come in the format:
