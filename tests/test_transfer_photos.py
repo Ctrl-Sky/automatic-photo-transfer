@@ -11,6 +11,9 @@ def test_get_end_values():
     assert get_end_values("tests/DCIM/101CANON", "IMG_8424.JPG", IMG_DATE) == ("tests/DCIM/101CANON", "IMG_8423.JPG", IMG_DATE)
 
 def test_transfer_photos_1_dir():
+    """
+        Test transfering multiple photos within the same directory
+    """
     assert transfer_photos("tests/DCIM/103CANON", "IMG_8423.JPG", HD_PATH) == ("tests/DCIM/103CANON", "IMG_8425.JPG", IMG_DATE)
     
     # Clean up environment
@@ -20,6 +23,9 @@ def test_transfer_photos_1_dir():
     os.rmdir("tests/hard_drive/Jul-2024")
 
 def test_transfer_photos_2_dir():
+    """
+        Test transfering multiple photos stored within 2 different directories
+    """
     assert transfer_photos("tests/DCIM/103CANON", "IMG_9998.JPG", HD_PATH) == ("tests/DCIM/104CANON", "IMG_0002.JPG", IMG_DATE)
     
     # Clean up environment
@@ -30,6 +36,9 @@ def test_transfer_photos_2_dir():
     os.rmdir("tests/hard_drive/Jul-2024")
 
 def test_transfer_photos_diff_dates():
+    """
+        Test transfering photos taken on different dates
+    """
     assert transfer_photos("tests/DCIM/104CANON", "IMG_1000.JPG", HD_PATH) == ("tests/DCIM/104CANON", "IMG_1001.JPG", IMG_DATE)
 
     # Clean up environment
@@ -39,6 +48,9 @@ def test_transfer_photos_diff_dates():
     os.rmdir("tests/hard_drive/Jan-2023")
 
 def test_transfer_photos_include_day():
+    """
+        Test transfering photos taken on different dates and storing them in directories with the date included
+    """
     assert transfer_photos("tests/DCIM/104CANON", "IMG_1000.JPG", HD_PATH, include_day=True) == ("tests/DCIM/104CANON", "IMG_1001.JPG", IMG_DATE)
 
     # Clean up environment
@@ -60,7 +72,7 @@ def test_transfer_photos_with_end_on_after():
     os.rmdir("tests/hard_drive/Jul-05-2024")
     os.rmdir("tests/hard_drive/Jul-11-2024")
 
-def test_transfer_photos_with_end_on_after():
+def test_transfer_photos_with_end_on_before():
     assert transfer_photos("tests/DCIM/104CANON", "IMG_8411.JPG", HD_PATH, end_on="2024:07:11", include_day=True) == ("tests/DCIM/104CANON", "IMG_8413.JPG", "2024:07:05 07:02:24")
 
     # Clean up environment
