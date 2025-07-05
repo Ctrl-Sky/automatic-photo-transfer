@@ -34,7 +34,7 @@ def image_before_end_on_date(end_on, image_path):
             return True
 
 
-def transfer_photos(start_dir, start_image, external_hd_path, include_day=False, end_on=""):
+def transfer_photos(start_dir, start_image, external_hd_path, include_day=True, end_on=""):
     """
         Transfers photos from an SD card directory to an external hard drive, organizing them by the month and year the photo was taken.
 

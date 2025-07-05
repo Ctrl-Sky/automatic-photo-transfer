@@ -14,7 +14,7 @@ def test_transfer_photos_1_dir():
     """
         Test transfering multiple photos within the same directory
     """
-    assert transfer_photos("tests/DCIM/103CANON", "IMG_8423.JPG", HD_PATH) == ("tests/DCIM/103CANON", "IMG_8425.JPG", IMG_DATE)
+    assert transfer_photos("tests/DCIM/103CANON", "IMG_8423.JPG", HD_PATH, include_day=False) == ("tests/DCIM/103CANON", "IMG_8425.JPG", IMG_DATE)
     
     # Clean up environment
     os.rename("tests/hard_drive/Jul-2024/IMG_8423.JPG", "tests/DCIM/103CANON/IMG_8423.JPG")
@@ -26,7 +26,7 @@ def test_transfer_photos_2_dir():
     """
         Test transfering multiple photos stored within 2 different directories
     """
-    assert transfer_photos("tests/DCIM/103CANON", "IMG_9998.JPG", HD_PATH) == ("tests/DCIM/104CANON", "IMG_0002.JPG", IMG_DATE)
+    assert transfer_photos("tests/DCIM/103CANON", "IMG_9998.JPG", HD_PATH, include_day=False) == ("tests/DCIM/104CANON", "IMG_0002.JPG", IMG_DATE)
     
     # Clean up environment
     os.rename("tests/hard_drive/Jul-2024/IMG_9998.JPG", "tests/DCIM/103CANON/IMG_9998.JPG")
@@ -39,7 +39,7 @@ def test_transfer_photos_diff_dates():
     """
         Test transfering photos taken on different dates
     """
-    assert transfer_photos("tests/DCIM/104CANON", "IMG_1000.JPG", HD_PATH) == ("tests/DCIM/104CANON", "IMG_1001.JPG", IMG_DATE)
+    assert transfer_photos("tests/DCIM/104CANON", "IMG_1000.JPG", HD_PATH, include_day=False) == ("tests/DCIM/104CANON", "IMG_1001.JPG", IMG_DATE)
 
     # Clean up environment
     os.rename("tests/hard_drive/Jan-2023/IMG_1000.JPG", "tests/DCIM/104CANON/IMG_1000.JPG")

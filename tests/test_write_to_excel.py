@@ -4,7 +4,7 @@ from src.write_to_excel import write_to_migration_table
 from src.initialize import initialize_table
 
 TEST_PATH = "tables/test1.csv"
-SD_CARD = "SD_CARD_1"
+SD_CARD = "DCIM/SD_CARD_1"
 
 def test_write_to_excel_no_name():
     initialize_table(TEST_PATH)
