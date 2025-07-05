@@ -4,8 +4,8 @@ from helpers import convert_to_month_year
 
 def write_to_migration_table(sd_card_name, start_dir, start_image, start_date, end_dir, end_image, end_date, table_path, migration_name=""):
     if migration_name == "":
-        pretty_start = convert_to_month_year(start_date)
-        pretty_end = convert_to_month_year(end_date)
+        pretty_start = convert_to_month_year(start_date, include_day=True)
+        pretty_end = convert_to_month_year(end_date, include_day=True)
         migration_name = f"{pretty_start}_{pretty_end}"
 
     data = [migration_name, sd_card_name, start_dir, start_image, start_date, end_dir, end_image, end_date]

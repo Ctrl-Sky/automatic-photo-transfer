@@ -14,7 +14,7 @@ def initialize_table(table_path):
         :type table_path: string
     """
     # Create Parent Directories
-    if os.path.dirname(table_path) != "":
+    if os.path.dirname(table_path) != "" and not os.path.exists(os.path.dirname(table_path)):
         os.makedirs(os.path.dirname(table_path))
 
     # Create csv file
