@@ -1,0 +1,18 @@
+import csv
+import os
+from helpers import convert_to_month_year
+
+def write_to_migration_table(sd_card_name, start_dir, start_image, start_date, end_dir, end_image, end_date, table_path, migration_name=""):
+    if migration_name == "":
+        pretty_start = convert_to_month_year(start_date)
+        pretty_end = convert_to_month_year(end_date)
+        migration_name = f"{pretty_start}_{pretty_end}"
+
+    data = [migration_name, sd_card_name, start_dir, start_image, start_date, end_dir, end_image, end_date]
+
+    if not os.path.exists(table_path):
+        raise Exception(f"{table_path} does not exist")
+
+    with open(table_path, 'a') as file:
+        writer = csv.writer(file)
+        writer.writerow(data)
