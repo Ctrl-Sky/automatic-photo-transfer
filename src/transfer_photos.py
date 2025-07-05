@@ -1,4 +1,6 @@
 import os
+import shutil
+from datetime import datetime
 import helpers
 
 def get_end_values(current_dir, current_image, current_date):
@@ -28,7 +30,9 @@ def image_before_end_on_date(end_on, image_path):
         return True
     else:
         image_date = helpers.get_date_taken(image_path)
-        if end_on in image_date:
+        image_date = datetime.strptime(image_date.split()[0], "%Y:%m:%d")
+        end_on = datetime.strptime(end_on, "%Y:%m:%d")
+        if image_date >= end_on:
             return False
         else:
             return True
@@ -68,7 +72,8 @@ def transfer_photos(start_dir, start_image, external_hd_path, include_day=True, 
             os.makedirs(hd_pretty_date_path)
 
         # Move the photo to the external hard drive
-        os.rename(current_path, f"{hd_pretty_date_path}/{current_image}")
+        print(f"Moving {current_path} to {hd_pretty_date_path}/{current_image}")
+        shutil.copy(current_path, f"{hd_pretty_date_path}/{current_image}")
 
         current_image = helpers.image_shift_up(current_image)
         if current_image == "Hit Photo Limit":

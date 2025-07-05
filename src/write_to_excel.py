@@ -15,6 +15,6 @@ def write_to_migration_table(sd_card_path, start_dir, start_image, start_date, e
     if not os.path.exists(table_path):
         raise Exception(f"{table_path} does not exist")
 
-    with open(table_path, 'a') as file:
+    with open(table_path, 'a', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(data)
